@@ -1,3 +1,141 @@
-{% extends "base.html" %}{% block title %}داشبورد | Database Studio{% endblock %}{% block content %}<div class="layout"><aside class="side"><div class="brand"><b>DS</b><strong>Database Studio<small>LOCAL WORKSPACE</small></strong></div><p class="caption">فضای کاری</p><a class="selected" href="{{ url_for('studio.dashboard') }}">▦　داشبورد</a><p class="caption">مدیریت داده</p><a href="#connections">⌁　اتصال‌ها <i>۰</i></a><a href="#query">⌘　ویرایشگر SQL</a><a href="#activity">◷　فعالیت اخیر</a><div class="spacer"></div><div class="local">●　حالت محلی فعال<small>127.0.0.1</small></div><div class="profile"><b>{{ username[:1]|upper }}</b><span>{{ username }}<small>کاربر واردشده</small></span><form method="post" action="{{ url_for('auth.logout') }}"><button title="خروج">↪</button></form></div></aside><main class="main"><header><div><small>فضای کاری　/　داشبورد</small><h1>سلام، {{ username }} <em>✦</em></h1><p>نمای کلی فضای مدیریت پایگاه داده‌ات.</p></div><label class="status">● Local only</label></header><section class="banner"><small>DATABASE WORKSPACE</small><h2>همه‌ی دیتابیس‌ها،<br>در یک فضای کاری.</h2><p>اتصال بساز، ساختار جدول‌ها را ببین و کوئری‌هایت را مدیریت کن.</p><a href="#connections">شروع مدیریت　←</a></section><section class="stats"><article><small>اتصال‌های ذخیره‌شده</small><h2>۰ <i>اتصال</i></h2><p>هنوز اتصالی ثبت نشده</p></article><article><small>پایگاه‌های داده</small><h2>—</h2><p>پس از اتصال نمایش داده می‌شود</p></article><article><small>کوئری‌های اجراشده</small><h2>—</h2><p>در نسخه‌های بعدی</p></article></section><div class="heading" id="connections"><small>GET STARTED</small><h2>اتصال جدید</h2><p>نوع پایگاه داده را برای شروع انتخاب کن.</p></div><section class="connect"><article><b class="ico blue">▤</b><h3>SQLite</h3><p>پایگاه داده فایل‌محور؛ بدون نیاز به سرور.</p><small>در حال آماده‌سازی</small></article><article><b class="ico gold">◉</b><h3>MySQL</h3><p>اتصال به سرور MySQL و مرور schemaها.</p><small>در حال آماده‌سازی</small></article><article><b class="ico red">▦</b><h3>SQL Server</h3><p>اتصال به Microsoft SQL Server با ODBC.</p><small>در حال آماده‌سازی</small></article></section><section class="lower"><article class="panel" id="query"><h3>ویرایشگر SQL</h3><p>محیط اجرای کوئری در مرحله بعد اضافه می‌شود.</p><div class="code"><small>query.sql</small><pre><i>SELECT</i> *
+{% extends "base.html" %}
+
+{% block title %}داشبورد | Database Studio{% endblock %}
+
+{% block content %}
+<div class="layout">
+    <aside class="side">
+        <div class="brand">
+            <b class="brand-mark">DS</b>
+            <strong>
+                Database Studio
+                <small>LOCAL WORKSPACE</small>
+            </strong>
+        </div>
+
+        <p class="caption">فضای کاری</p>
+        <a class="selected" href="{{ url_for('studio.dashboard') }}">
+            <span aria-hidden="true">▦</span> داشبورد
+        </a>
+
+        <p class="caption">مدیریت داده</p>
+        <a href="#connections"><span aria-hidden="true">⌁</span> اتصال‌ها <i>۰</i></a>
+        <a href="#query"><span aria-hidden="true">⌘</span> ویرایشگر SQL</a>
+        <a href="#activity"><span aria-hidden="true">◷</span> فعالیت اخیر</a>
+
+        <div class="spacer"></div>
+
+        <div class="local">
+            <span aria-hidden="true">●</span> حالت محلی فعال
+            <small>127.0.0.1</small>
+        </div>
+
+        <div class="profile">
+            <b>{{ username[:1]|upper }}</b>
+            <span>
+                {{ username }}
+                <small>کاربر واردشده</small>
+            </span>
+            <form method="post" action="{{ url_for('auth.logout') }}">
+                <button type="submit" title="خروج" aria-label="خروج">↪</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="page-header">
+            <div>
+                <small>فضای کاری / داشبورد</small>
+                <h1>سلام، {{ username }} <em aria-hidden="true">✦</em></h1>
+                <p>نمای کلی فضای مدیریت پایگاه داده‌ات.</p>
+            </div>
+            <span class="status">● Local only</span>
+        </header>
+
+        <section class="banner">
+            <small>DATABASE WORKSPACE</small>
+            <h2>همه‌ی دیتابیس‌ها،<br>در یک فضای کاری.</h2>
+            <p>
+                این داشبورد نقطه شروع مدیریت اتصال‌ها و بررسی ساختار داده‌هاست.
+            </p>
+            <a href="#connections">مشاهده بخش اتصال‌ها ←</a>
+        </section>
+
+        <section class="stats" aria-label="آمار فضای کاری">
+            <article>
+                <small>اتصال‌های ذخیره‌شده</small>
+                <h2>۰ <i>اتصال</i></h2>
+                <p>مدیریت اتصال هنوز پیاده‌سازی نشده است.</p>
+            </article>
+            <article>
+                <small>پایگاه‌های داده</small>
+                <h2>—</h2>
+                <p>پس از پیاده‌سازی اتصال‌ها نمایش داده می‌شود.</p>
+            </article>
+            <article>
+                <small>کوئری‌های اجراشده</small>
+                <h2>—</h2>
+                <p>ویرایشگر SQL هنوز پیاده‌سازی نشده است.</p>
+            </article>
+        </section>
+
+        <section class="section-heading" id="connections">
+            <small>GET STARTED</small>
+            <h2>اتصال به پایگاه داده</h2>
+            <p>پشتیبانی از این موتورهای دیتابیس در برنامه‌ریزی پروژه است.</p>
+        </section>
+
+        <section class="connect">
+            <article>
+                <b class="ico blue" aria-hidden="true">▤</b>
+                <h3>SQLite</h3>
+                <p>پایگاه داده فایل‌محور؛ بدون نیاز به سرور جداگانه.</p>
+                <small>در انتظار پیاده‌سازی</small>
+            </article>
+            <article>
+                <b class="ico gold" aria-hidden="true">◉</b>
+                <h3>MySQL</h3>
+                <p>اتصال به سرور MySQL و مرور ساختار دیتابیس.</p>
+                <small>در انتظار پیاده‌سازی</small>
+            </article>
+            <article>
+                <b class="ico red" aria-hidden="true">▦</b>
+                <h3>SQL Server</h3>
+                <p>اتصال به Microsoft SQL Server با درایور مناسب.</p>
+                <small>در انتظار پیاده‌سازی</small>
+            </article>
+        </section>
+
+        <section class="lower">
+            <article class="panel" id="query">
+                <h3>ویرایشگر SQL</h3>
+                <p>این قسمت در حال حاضر فقط پیش‌نمایش رابط کاربری است.</p>
+
+                <div class="code">
+                    <small>query.sql</small>
+                    <pre><i>SELECT</i> *
 <i>FROM</i> your_table
-<i>LIMIT</i> 100;</pre><footer>SQL <span>Read-only preview</span></footer></div></article><article class="panel" id="activity"><h3>فعالیت اخیر</h3><p>رویدادهای فضای کاری</p><div class="empty"><b>◷</b><strong>هنوز فعالیتی ثبت نشده</strong><small>با ایجاد اولین اتصال، این بخش فعال می‌شود.</small></div></article></section><footer class="foot">Database Studio　•　Local workspace <span>نسخه توسعه</span></footer></main></div>{% endblock %}
+<i>LIMIT</i> 100;</pre>
+                    <footer>SQL <span>پیش‌نمایش، بدون اجرا</span></footer>
+                </div>
+            </article>
+
+            <article class="panel" id="activity">
+                <h3>فعالیت اخیر</h3>
+                <p>تاریخچه فعالیت‌ها هنوز پیاده‌سازی نشده است.</p>
+
+                <div class="empty">
+                    <b aria-hidden="true">◷</b>
+                    <strong>هنوز فعالیتی ثبت نشده</strong>
+                    <small>این بخش پس از افزودن ثبت رویدادها فعال می‌شود.</small>
+                </div>
+            </article>
+        </section>
+
+        <footer class="foot">
+            <span>Database Studio · Local workspace</span>
+            <span>نسخه توسعه</span>
+        </footer>
+    </main>
+</div>
+{% endblock %}
