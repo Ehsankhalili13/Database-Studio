@@ -6,7 +6,7 @@ from flask import Flask, redirect, url_for
 
 from auth import auth_bp, login_manager
 from connections import connections_bp
-from extensions import db
+from extensions import csrf, db
 from studio import studio_bp
 
 load_dotenv()
@@ -45,6 +45,7 @@ def create_app():
     )
 
     db.init_app(app)
+    csrf.init_app(app)
     login_manager.init_app(app)
 
     app.register_blueprint(auth_bp)
