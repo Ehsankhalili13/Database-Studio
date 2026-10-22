@@ -47,7 +47,10 @@
                         </tbody>
                     </table>
                 </div>
-                <a class="button" href="{{ url_for('connections.query', connection_id=connection.id) }}">اجرای کوئری روی این اتصال</a>
+                <div class="form-actions">
+                    <a class="button" href="{{ url_for('connections.table_data', connection_id=connection.id, table_name=selected_table) }}">مشاهده داده‌های جدول</a>
+                    <a class="button" href="{{ url_for('connections.query', connection_id=connection.id) }}">اجرای کوئری روی این اتصال</a>
+                </div>
             {% else %}
                 <div class="empty-state compact">
                     <h2>یک جدول را انتخاب کن</h2>
