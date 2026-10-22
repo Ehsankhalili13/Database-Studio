@@ -255,7 +255,7 @@ def table_data(connection_id, table_name):
             page = max(1, request.args.get("page", 1, type=int))
             per_page = 100
             with engine.connect() as conn:
-                total = conn.execute(select(table.count())).scalar_one()
+                total = conn.execute(select(func.count()).select_from(table)).scalar_one()
                 result = conn.execute(
                     select(table).limit(per_page).offset((page - 1) * per_page)
                 )
