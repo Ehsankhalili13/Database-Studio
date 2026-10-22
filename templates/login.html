@@ -1,3 +1,63 @@
-{% extends "base.html" %}{% block title %}ورود | Database Studio{% endblock %}{% block content %}<main class="auth"><section class="card"><div class="brand"><b>DS</b><strong>Database Studio<small>LOCAL WORKSPACE</small></strong></div><p class="tag">خوش برگشتی</p><h1>ورود به فضای کاری</h1><p class="muted">اتصال‌ها و پایگاه‌های داده‌ات را یک‌جا مدیریت کن.</p><form method="post"><label>نام کاربری<input name="username" autocomplete="username" required maxlength="64"></label><label>گذرواژه<input type="password" name="password" autocomplete="current-password" required></label><button class="primary">ورود به برنامه ←</button></form><p class="note">این ابزار فقط برای استفاده محلی طراحی شده است.</p></section><aside class="hero"><span>SQL WORKSPACE</span><h2>داده‌ها،<br>تحت کنترل تو.</h2><p>یک فضای کاری مرتب برای SQLite، MySQL و SQL Server.</p><div class="preview"><small>● ● ●</small><pre>SELECT name
+{% extends "base.html" %}
+
+{% block title %}ورود | Database Studio{% endblock %}
+
+{% block content %}
+<main class="auth">
+    <section class="card">
+        <div class="brand">
+            <b class="brand-mark">DS</b>
+            <strong>
+                Database Studio
+                <small>LOCAL WORKSPACE</small>
+            </strong>
+        </div>
+
+        <p class="tag">خوش برگشتی</p>
+        <h1>ورود به فضای کاری</h1>
+        <p class="muted">
+            اتصال‌ها و پایگاه‌های داده‌ات را یک‌جا مدیریت کن.
+        </p>
+
+        <form method="post">
+            <label for="username">نام کاربری</label>
+            <input
+                id="username"
+                name="username"
+                autocomplete="username"
+                maxlength="64"
+                required
+            >
+
+            <label for="password">گذرواژه</label>
+            <input
+                id="password"
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button class="primary" type="submit">
+                ورود به برنامه <span aria-hidden="true">←</span>
+            </button>
+        </form>
+
+        <p class="note">این ابزار فقط برای استفاده محلی طراحی شده است.</p>
+    </section>
+
+    <aside class="hero">
+        <span>SQL WORKSPACE</span>
+        <h2>داده‌ها،<br>تحت کنترل تو.</h2>
+        <p>یک فضای کاری مرتب برای SQLite، MySQL و SQL Server.</p>
+
+        <div class="preview" aria-label="نمونه کوئری SQL">
+            <small>● ● ●</small>
+            <pre>SELECT name
 FROM databases
-WHERE status = 'ready';</pre><label>Query ready ✓</label></div></aside></main>{% endblock %}
+WHERE status = 'ready';</pre>
+            <label>Query preview</label>
+        </div>
+    </aside>
+</main>
+{% endblock %}
