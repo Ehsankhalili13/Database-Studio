@@ -28,3 +28,35 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class DatabaseConnection(db.Model):
+    """Saved connection profile. Passwords are encrypted before persistence."""
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    driver = db.Column(db.String(20), nullable=False, index=True)
+    host = db.Column(db.String(255), nullable=True)
+    port = db.Column(db.Integer, nullable=True)
+    database_name = db.Column(db.String(255), nullable=True)
+    database_path = db.Column(db.String(1000), nullable=True)
+    username = db.Column(db.String(255), nullable=True)
+    password_encrypted = db.Column(db.Text, nullable=False, default="")
+    odbc_driver = db.Column(
+        db.String(255),
+        nullable=False,
+        default="ODBC Driver 18 for SQL Server",
+    )
+    encrypt_connection = db.Column(db.Boolean, nullable=False, default=True)
+    trust_server_certificate = db.Column(db.Boolean, nullable=False, default=False)
+    created_at = db.Column(
+        db.DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+    updated_at = db.Column(
+        db.DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
