@@ -1,1 +1,58 @@
-{% extends "base.html" %}{% block title %}راه‌اندازی | Database Studio{% endblock %}{% block content %}<main class="auth"><section class="card"><div class="brand"><b>DS</b><strong>Database Studio<small>FIRST-TIME SETUP</small></strong></div><p class="tag">راه‌اندازی اولیه</p><h1>حساب مدیر را بساز</h1><p class="muted">این فرم فقط تا ساخت اولین حساب در دسترس است.</p><form method="post"><label>نام کاربری<input name="username" autocomplete="username" required minlength="3" maxlength="64" pattern="[A-Za-z0-9_.-]+"></label><label>گذرواژه (حداقل ۱۲ کاراکتر)<input type="password" name="password" autocomplete="new-password" required minlength="12"></label><button class="primary">ساخت حساب و ورود ←</button></form><p class="note">نام کاربری لاتین؛ گذرواژه را امن نگه دار.</p></section><aside class="hero"><span>PRIVATE WORKSPACE</span><h2>محیط شخصی،<br>دسترسی حساب‌شده.</h2><p>ورود و حساب کاربری با هش امن گذرواژه‌ها.</p></aside></main>{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}راه‌اندازی | Database Studio{% endblock %}
+
+{% block content %}
+<main class="auth">
+    <section class="card">
+        <div class="brand">
+            <b class="brand-mark">DS</b>
+            <strong>
+                Database Studio
+                <small>FIRST-TIME SETUP</small>
+            </strong>
+        </div>
+
+        <p class="tag">راه‌اندازی اولیه</p>
+        <h1>حساب اولیه را بساز</h1>
+        <p class="muted">
+            این فرم فقط برای ساخت اولین حساب برنامه در دسترس است.
+        </p>
+
+        <form method="post">
+            <label for="username">نام کاربری</label>
+            <input
+                id="username"
+                name="username"
+                autocomplete="username"
+                minlength="3"
+                maxlength="64"
+                pattern="[A-Za-z0-9_.-]+"
+                required
+            >
+
+            <label for="password">گذرواژه (حداقل ۱۲ کاراکتر)</label>
+            <input
+                id="password"
+                type="password"
+                name="password"
+                autocomplete="new-password"
+                minlength="12"
+                required
+            >
+
+            <button class="primary" type="submit">
+                ساخت حساب و ورود <span aria-hidden="true">←</span>
+            </button>
+        </form>
+
+        <p class="note">نام کاربری لاتین؛ گذرواژه را در جای امن نگه دار.</p>
+    </section>
+
+    <aside class="hero">
+        <span>PRIVATE WORKSPACE</span>
+        <h2>محیط شخصی،<br>دسترسی حساب‌شده.</h2>
+        <p>شروع امن‌تر با گذرواژه‌های هش‌شده و نشست کاربری.</p>
+    </aside>
+</main>
+{% endblock %}
