@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}داده‌های {{ table_name }} | {{ connection.name }}{% endblock %}
+{% block content %}
+<main class="workspace">
+    <header class="workspace-header">
+        <div>
+            <a href="{{ url_for('connections.explorer', connection_id=connection.id, table=table_name) }}">← بازگشت به ساختار جدول</a>
+            <h1>داده‌های جدول {{ table_name }}</h1>
+            <p>اتصال: {{ connection.name }} · {{ total }} ردیف</p>
+        </div>
+        <div class="form-actions">
+            <a class="button" href="{{ url_for('connections.import_table', connection_id=connection.id, table_name=table_name) }}">وارد کردن CSV</a>
+            <a class="button primary-button" href="{{ url_for('connections.export_table', connection_id=connection.id, table_name=table_name) }}">خروجی CSV</a>
+        </div>
+    </header>
+    <section class="result-panel">
+        {% if rows %}
+            <div class="table-scroll">
+                <table class="data-table">
+                    <thead><tr>{% for column in columns %}<th>{{ column }}</th>{% endfor %}</tr></thead>
+                    <tbody>
+                        {% for row in rows %}
+                            <tr>{% for value in row %}<td>{{ value if value is not none else "NULL" }}</td>{% endfor %}</tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state compact"><h2>جدول خالی است</h2><p>برای این جدول ردیفی پیدا نشد.</p></div>
+        {% endif %}
+        <nav class="pagination" aria-label="صفحه‌بندی">
+            {% if page > 1 %}<a class="button" href="{{ url_for('connections.table_data', connection_id=connection.id, table_name=table_name, page=page-1) }}">صفحه قبل</a>{% endif %}
+            <span>صفحه {{ page }} از {{ pages }}</span>
+            {% if page < pages %}<a class="button" href="{{ url_for('connections.table_data', connection_id=connection.id, table_name=table_name, page=page+1) }}">صفحه بعد</a>{% endif %}
+        </nav>
+    </section>
+</main>
+{% endblock %}
