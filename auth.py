@@ -1,6 +1,6 @@
 import re
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import (
     LoginManager,
     current_user,
@@ -10,7 +10,7 @@ from flask_login import (
 )
 
 from extensions import db
-from models import User
+from models import DatabaseConnection, User
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -51,7 +51,7 @@ def signup():
         elif len(password) < 12:
             flash("گذرواژه باید دست‌کم ۱۲ کاراکتر باشد.", "error")
         else:
-            user = User(username=username)
+            user = User(username=username, is_admin=True)
             user.set_password(password)
 
             db.session.add(user)
@@ -87,3 +87,57 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("auth.login"))
+
+
+
+def _require_admin():
+    if not current_user.is_authenticated or not current_user.is_admin:
+        abort(403)
+
+
+@auth_bp.route("/users", methods=["GET", "POST"])
+@login_required
+def users():
+    _require_admin()
+
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+
+        if not re.fullmatch(r"[A-Za-z0-9_.-]{3,64}", username):
+            flash("نام کاربری باید ۳ تا ۶۴ حرف انگلیسی، عدد یا . _ - باشد.", "error")
+        elif len(password) < 12:
+            flash("گذرواژه باید دست‌کم ۱۲ کاراکتر باشد.", "error")
+        elif User.query.filter_by(username=username).first():
+            flash("این نام کاربری قبلاً ثبت شده است.", "error")
+        else:
+            user = User(username=username, is_admin=False)
+            user.set_password(password)
+            db.session.add(user)
+            db.session.commit()
+            flash("حساب کاربری جدید ساخته شد.", "success")
+            return redirect(url_for("auth.users"))
+
+    users_list = User.query.order_by(User.id).all()
+    return render_template("users.html", users=users_list)
+
+
+@auth_bp.post("/users/<int:user_id>/delete")
+@login_required
+def delete_user(user_id):
+    _require_admin()
+    user = db.session.get(User, user_id)
+    if user is None:
+        abort(404)
+    if user.id == current_user.id:
+        flash("نمی‌توانی حساب فعلی خودت را حذف کنی.", "error")
+        return redirect(url_for("auth.users"))
+    if user.is_admin:
+        flash("حذف حساب مدیر از این صفحه مجاز نیست.", "error")
+        return redirect(url_for("auth.users"))
+
+    DatabaseConnection.query.filter_by(owner_id=user.id).delete()
+    db.session.delete(user)
+    db.session.commit()
+    flash("حساب کاربری و اتصال‌های متعلق به آن حذف شدند.", "success")
+    return redirect(url_for("auth.users"))
