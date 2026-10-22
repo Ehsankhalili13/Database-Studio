@@ -1,15 +1,24 @@
 # Database Studio
 
-A local-first, multi-user database management studio inspired by SSMS and phpMyAdmin.
+A local-only, multi-account database management workspace inspired by SSMS and phpMyAdmin.
 
-## Planned stack
+## Current milestone
+- Flask app, first-run account creation, login/logout
+- Password hashing and a responsive Persian RTL dashboard
+- Internal app metadata stored in SQLite
+- Loopback-only server binding (`127.0.0.1`)
 
-- Python, Flask, SQLAlchemy 2.x
-- Jinja2, HTML, CSS, JavaScript
-- SQLite, MySQL, Microsoft SQL Server adapters
+## Windows setup
+1. Install Python 3.11+.
+2. Create a virtual environment: `py -m venv .venv`
+3. Activate it: `.\\.venv\\Scripts\\Activate.ps1`
+4. Install: `pip install -r requirements.txt`
+5. Copy `.env.example` to `.env` and set a long random `SECRET_KEY`.
+6. Run `python app.py`.
+7. Visit `http://127.0.0.1:5000/auth/signup` and create the first account.
 
-## Initial development
+## Planned next
+Connection manager and validation; SQLite/MySQL/SQL Server adapters; schema explorer; paginated table browser; SQL editor; exports; local user and role administration.
 
-Create a virtual environment, install requirements, copy `.env.example` to `.env`, set a strong secret key, and run `python app.py`.
-
-**Security:** keep the server bound to localhost. Database access and arbitrary SQL execution are powerful; do not expose this development app to untrusted networks.
+## Scope and security
+This is an early scaffold, **not yet a database-management replacement for SSMS/phpMyAdmin**. First-account setup is implemented; provisioning extra accounts and roles is unfinished. The app intentionally listens on loopback. Protect `.env` and `instance/`, and use low-privilege database credentials. SQL execution, credential protection, CSRF controls, and audit logging require implementation and review before working with important databases.
