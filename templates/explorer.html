@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}مرور دیتابیس | {{ connection.name }}{% endblock %}
+{% block content %}
+<main class="workspace">
+    <header class="workspace-header">
+        <div>
+            <a href="{{ url_for('connections.index') }}">← بازگشت به اتصال‌ها</a>
+            <h1>{{ connection.name }}</h1>
+            <p>مرور جدول‌ها و ستون‌های دیتابیس</p>
+        </div>
+        <a class="button primary-button" href="{{ url_for('connections.query', connection_id=connection.id) }}">باز کردن ویرایشگر SQL</a>
+    </header>
+
+    <section class="explorer-grid">
+        <aside class="explorer-panel">
+            <h2>پایگاه‌های داده</h2>
+            <ul class="tree-list">
+                {% for database in databases %}
+                    <li>{{ database }}</li>
+                {% endfor %}
+            </ul>
+            <h2>جدول‌ها ({{ tables|length }})</h2>
+            <ul class="tree-list">
+                {% for table in tables %}
+                    <li><a class="{% if selected_table == table %}active-tree-item{% endif %}" href="{{ url_for('connections.explorer', connection_id=connection.id, table=table) }}">▦ {{ table }}</a></li>
+                {% else %}
+                    <li class="muted-text">جدولی پیدا نشد.</li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <section class="explorer-panel">
+            {% if selected_table %}
+                <h2>ستون‌های جدول: {{ selected_table }}</h2>
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead><tr><th>نام ستون</th><th>نوع داده</th><th>Nullable</th><th>کلید اصلی</th></tr></thead>
+                        <tbody>
+                            {% for column in columns %}
+                                <tr>
+                                    <td>{{ column.name }}</td>
+                                    <td>{{ column.type }}</td>
+                                    <td>{{ "بله" if column.nullable else "خیر" }}</td>
+                                    <td>{{ "بله" if column.get("primary_key") else "خیر" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <a class="button" href="{{ url_for('connections.query', connection_id=connection.id) }}">اجرای کوئری روی این اتصال</a>
+            {% else %}
+                <div class="empty-state compact">
+                    <h2>یک جدول را انتخاب کن</h2>
+                    <p>از فهرست سمت راست، جدول موردنظرت را انتخاب کن تا ستون‌های آن نمایش داده شوند.</p>
+                </div>
+            {% endif %}
+        </section>
+    </section>
+</main>
+{% endblock %}
