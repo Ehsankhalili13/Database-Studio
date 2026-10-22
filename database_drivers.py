@@ -81,13 +81,20 @@ def build_database_url(connection):
 
 
 def create_database_engine(connection) -> Engine:
+    if connection.driver == "mysql":
+        connect_args = {"connect_timeout": 8}
+    elif connection.driver == "sqlserver":
+        connect_args = {"timeout": 8}
+    else:
+        connect_args = {}
+
     return create_engine(
         build_database_url(connection),
         pool_pre_ping=True,
         pool_recycle=1800,
         future=True,
         hide_parameters=True,
-        connect_args={"timeout": 8} if connection.driver != "sqlite" else {},
+        connect_args=connect_args,
     )
 
 
