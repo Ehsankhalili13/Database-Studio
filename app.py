@@ -3,6 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from flask import Flask, redirect, url_for
+from sqlalchemy import inspect, text
 
 from auth import auth_bp, login_manager
 from connections import connections_bp
@@ -70,6 +71,22 @@ def create_app():
         from models import User  # Register the model before creating tables.
 
         db.create_all()
+
+        # Lightweight SQLite schema upgrade for installations created earlier.
+        user_columns = {
+            column["name"] for column in inspect(db.engine).get_columns("user")
+        }
+        if "is_admin" not in user_columns:
+            with db.engine.begin() as connection:
+                connection.execute(
+                    text("ALTER TABLE user ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT 0")
+                )
+
+        if not User.query.filter_by(is_admin=True).first():
+            first_user = User.query.order_by(User.id).first()
+            if first_user:
+                first_user.is_admin = True
+                db.session.commit()
 
     return app
 
