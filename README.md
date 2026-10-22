@@ -59,10 +59,10 @@ Open PowerShell in the project directory.
 
 The repository includes SQLite connection/query smoke tests. Install pytest and run:
 
-\`\`\`powershell
+```powershell
 python -m pip install pytest
 python -m pytest -q
-\`\`\`
+```
 
 GitHub Actions is configured to run these tests on pushes and pull requests. This does not replace testing against real MySQL and SQL Server instances.
 
