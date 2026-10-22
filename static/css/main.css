@@ -1,3 +1,51 @@
+/* Webfont: Yekan */
+@font-face {
+    font-family: "Yekan";
+    src: url('/static/fonts/Yekan/Yekan.eot');
+    src: url('/static/fonts/Yekan/Yekan.eot?#iefix') format('embedded-opentype'),
+        url('/static/fonts/Yekan/Yekan.woff2') format('woff2'),
+        url('/static/fonts/Yekan/Yekan.woff') format('woff'),
+        url('/static/fonts/Yekan/Yekan.otf') format('opentype'),
+        url('/static/fonts/Yekan/Yekan.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    text-rendering: optimizeLegibility;
+    font-display: auto;
+}
+
+/* Poppins */
+@font-face {
+    font-family: 'Poppins';
+    src: url('/static/fonts/Poppins/Poppins-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/static/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/static/fonts/Poppins/Poppins-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/static/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --ink: #252640;
     --muted: #9297aa;
@@ -12,7 +60,7 @@ body {
     margin: 0;
     background: var(--page);
     color: var(--ink);
-    font: 14px Tahoma,'Segoe UI',sans-serif
+    font: 14px "Yekan", "Poppins";
 }
 a {
     color: inherit;
@@ -90,7 +138,7 @@ a {
     direction: ltr;
     text-align: left
 }
-.card input: focus {
+.card input:focus {
     outline: 2px solid #7161ed30;
     border-color: var(--violet)
 }
@@ -310,7 +358,7 @@ a {
     padding: 9px 13px;
     color: #777
 }
-.status: first-letter {
+.status:first-letter {
     color: #2bb88a
 }
 .banner {
@@ -532,7 +580,7 @@ a {
         border: 0;
         padding: 0
     }
-    .side .brand strong,.caption,.side>a: not(.selected),.side>a.selected {
+    .side .brand strong,.caption,.side>a:not(.selected),.side>a.selected {
         font-size: 0
     }
     .side .brand strong,.side .brand strong small,.side>a span,.local,.profile span,.profile form {
