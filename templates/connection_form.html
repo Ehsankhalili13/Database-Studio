@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}{% if connection %}ویرایش اتصال{% else %}اتصال جدید{% endif %} | Database Studio{% endblock %}
+{% block content %}
+<main class="workspace narrow-workspace">
+    <header class="workspace-header">
+        <div>
+            <a href="{{ url_for('connections.index') }}">← بازگشت به اتصال‌ها</a>
+            <h1>{% if connection %}ویرایش اتصال{% else %}ساخت اتصال جدید{% endif %}</h1>
+            <p>رمز اتصال در پایگاه داده داخلی به‌صورت رمزنگاری‌شده ذخیره می‌شود.</p>
+        </div>
+    </header>
+
+    <form class="settings-form" method="post">
+        <label>نام دلخواه اتصال
+            <input name="name" maxlength="100" required value="{{ form_values.get('name', connection.name if connection else '') }}">
+        </label>
+
+        <label>نوع دیتابیس
+            <select name="driver" id="driver" required>
+                {% for key, label in drivers.items() %}
+                    <option value="{{ key }}" {% if form_values.get('driver', connection.driver if connection else 'sqlite') == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <div id="sqlite-fields">
+            <label>مسیر فایل SQLite
+                <input name="database_path" placeholder="database.sqlite" value="{{ form_values.get('database_path', connection.database_path if connection else 'database.sqlite') }}">
+            </label>
+            <p class="form-hint">مسیر نسبی نسبت به پوشه instance برنامه در نظر گرفته می‌شود.</p>
+        </div>
+
+        <div id="server-fields">
+            <label>میزبان / Host
+                <input name="host" placeholder="127.0.0.1" value="{{ form_values.get('host', connection.host if connection else '127.0.0.1') }}">
+            </label>
+            <label>پورت
+                <input name="port" type="number" min="1" max="65535" value="{{ form_values.get('port', connection.port if connection and connection.port else '') }}">
+            </label>
+            <label>نام دیتابیس
+                <input name="database_name" value="{{ form_values.get('database_name', connection.database_name if connection else '') }}">
+            </label>
+            <label>نام کاربری
+                <input name="username" autocomplete="username" value="{{ form_values.get('username', connection.username if connection else '') }}">
+            </label>
+            <label>گذرواژه {% if connection %}<small>(برای حفظ رمز فعلی خالی بگذار)</small>{% endif %}
+                <input name="password" type="password" autocomplete="new-password">
+            </label>
+        </div>
+
+        <div id="sqlserver-fields">
+            <label>نام ODBC Driver
+                <input name="odbc_driver" value="{{ form_values.get('odbc_driver', connection.odbc_driver if connection else 'ODBC Driver 18 for SQL Server') }}">
+            </label>
+            <label class="check-row">
+                <input type="checkbox" name="encrypt_connection" {% if form_values.get('encrypt_connection') == 'on' or (not form_values and (connection.encrypt_connection if connection else True)) %}checked{% endif %}>
+                رمزنگاری ارتباط
+            </label>
+            <label class="check-row">
+                <input type="checkbox" name="trust_server_certificate" {% if form_values.get('trust_server_certificate') == 'on' or (not form_values and connection and connection.trust_server_certificate) %}checked{% endif %}>
+                اعتماد به گواهی سرور (فقط برای محیط مورد اعتماد)
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button class="button primary-button" type="submit">تست و ذخیره اتصال</button>
+            <a class="button" href="{{ url_for('connections.index') }}">انصراف</a>
+        </div>
+    </form>
+</main>
+<script>
+    const driverSelect = document.getElementById("driver");
+    const sqliteFields = document.getElementById("sqlite-fields");
+    const serverFields = document.getElementById("server-fields");
+    const sqlServerFields = document.getElementById("sqlserver-fields");
+
+    function updateDriverFields() {
+        const driver = driverSelect.value;
+        sqliteFields.hidden = driver !== "sqlite";
+        serverFields.hidden = driver === "sqlite";
+        sqlServerFields.hidden = driver !== "sqlserver";
+    }
+
+    driverSelect.addEventListener("change", updateDriverFields);
+    updateDriverFields();
+</script>
+{% endblock %}
