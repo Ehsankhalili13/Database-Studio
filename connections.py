@@ -4,7 +4,10 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for,
 from flask_login import current_user, login_required
 from sqlalchemy import MetaData, Table, func, inspect, select
 
-import csv\nimport io\n\nfrom database_drivers import (
+import csv
+import io
+
+from database_drivers import (
     create_database_engine,
     encrypt_password,
     list_databases,
