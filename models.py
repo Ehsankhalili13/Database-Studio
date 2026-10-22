@@ -34,6 +34,7 @@ class DatabaseConnection(db.Model):
     """Saved connection profile. Passwords are encrypted before persistence."""
 
     id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, index=True)
     name = db.Column(db.String(100), nullable=False)
     driver = db.Column(db.String(20), nullable=False, index=True)
     host = db.Column(db.String(255), nullable=True)
