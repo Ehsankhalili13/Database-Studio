@@ -933,3 +933,30 @@ a {
     text-align: left;
     background: white;
 }
+
+.user-create {
+    max-width: 720px;
+    margin-bottom: 24px;
+}
+.user-create h2,
+.user-list h2 {
+    margin: 0 0 16px;
+    font-size: 16px;
+}
+.user-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 19px;
+    margin-bottom: 9px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: white;
+}
+.user-row small {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 10px;
+}
