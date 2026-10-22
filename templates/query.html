@@ -12,6 +12,7 @@
     </header>
 
     <form class="query-form" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="sql">دستور SQL</label>
         <textarea id="sql" name="sql" spellcheck="false" autocapitalize="off" required>{{ sql }}</textarea>
         <div class="query-actions">
