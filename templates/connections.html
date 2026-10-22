@@ -31,6 +31,7 @@
                         <a class="button" href="{{ url_for('connections.query', connection_id=connection.id) }}">ویرایشگر SQL</a>
                         <a class="button" href="{{ url_for('connections.edit', connection_id=connection.id) }}">ویرایش</a>
                         <form method="post" action="{{ url_for('connections.test', connection_id=connection.id) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button class="button" type="submit">تست اتصال</button>
                         </form>
                         <form method="post" action="{{ url_for('connections.delete', connection_id=connection.id) }}" onsubmit="return confirm('این اتصال حذف شود؟')">
