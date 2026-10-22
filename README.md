@@ -4,7 +4,7 @@ A local-only database management workspace inspired by SSMS and phpMyAdmin. The 
 
 ## Implemented
 
-- First-account setup, login, logout, password hashing, and CSRF protection for POST forms.
+- First-account setup, login, logout, administrator-created local user accounts, and CSRF protection for POST forms.
 - Saved connection profiles for SQLite, MySQL, and Microsoft SQL Server.
 - Connection test before saving, connection edit/delete, and per-user connection visibility.
 - Encryption of saved connection passwords using a key derived from the Flask secret key.
@@ -69,7 +69,7 @@ This is an early-stage local development tool, not yet a fully audited replaceme
 - The editor accepts one statement per execution. It is not a complete SQL parser; semicolons inside string literals may be rejected.
 - The table browser is read-only; change data using SQL statements in the editor.
 - CSV import inserts rows into an existing table; it does not create tables or infer schema.
-- Additional account administration, roles, query history, and comprehensive automated integration tests are not yet implemented.
+- Fine-grained roles/permissions, query history, editing table rows through the grid, database/schema creation wizards, and comprehensive automated integration tests are not yet implemented.
 - Existing application tables are created automatically, but schema changes are not managed by a migration system yet. Back up `instance/studio.sqlite3` before future model changes.
 - Keep the app bound to `127.0.0.1`. Do not expose it to a network. Protect `.env`, `instance/secret.key`, and `instance/studio.sqlite3`.
 
