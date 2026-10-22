@@ -27,8 +27,18 @@ def create_app():
 
     secret_key = os.getenv("SECRET_KEY")
     if not secret_key:
-        # Development fallback only. Configure SECRET_KEY in .env for stable sessions.
-        secret_key = os.urandom(32)
+        # Keep local sessions and encrypted connection passwords valid between restarts.
+        key_file = data_dir / "secret.key"
+        if key_file.exists():
+            secret_key = key_file.read_text(encoding="utf-8").strip()
+        else:
+            secret_key = os.urandom(32).hex()
+            key_file.write_text(secret_key, encoding="utf-8")
+            try:
+                key_file.chmod(0o600)
+            except OSError:
+                # Windows does not support POSIX permission bits in the same way.
+                pass
 
     database_file = data_dir / "studio.sqlite3"
 
