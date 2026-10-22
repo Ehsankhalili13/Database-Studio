@@ -19,6 +19,7 @@
         </a>
 
         <p class="caption">مدیریت داده</p>
+        {% if current_user.is_admin %}<a href="{{ url_for('auth.users') }}"><span aria-hidden="true">♙</span> مدیریت کاربران</a>{% endif %}
         <a href="{{ url_for('connections.index') }}"><span aria-hidden="true">⌁</span> اتصال‌ها</a>
         <a href="{{ url_for('connections.index') }}"><span aria-hidden="true">⌘</span> ویرایشگر SQL</a>
         <a href="#activity"><span aria-hidden="true">◷</span> فعالیت اخیر</a>
