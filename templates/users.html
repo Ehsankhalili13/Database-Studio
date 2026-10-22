@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}مدیریت کاربران | Database Studio{% endblock %}
+{% block content %}
+<main class="workspace">
+    <header class="workspace-header">
+        <div>
+            <a href="{{ url_for('studio.dashboard') }}">← بازگشت به داشبورد</a>
+            <h1>مدیریت کاربران</h1>
+            <p>حساب‌های این نصب محلی را مدیریت کن. فقط مدیر می‌تواند کاربر جدید بسازد.</p>
+        </div>
+    </header>
+
+    <section class="settings-form user-create">
+        <h2>ساخت حساب جدید</h2>
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>نام کاربری
+                <input name="username" minlength="3" maxlength="64" pattern="[A-Za-z0-9_.-]+" autocomplete="off" required>
+            </label>
+            <label>گذرواژه (حداقل ۱۲ کاراکتر)
+                <input type="password" name="password" minlength="12" autocomplete="new-password" required>
+            </label>
+            <button class="button primary-button" type="submit">ساخت حساب</button>
+        </form>
+    </section>
+
+    <section class="user-list">
+        <h2>حساب‌های موجود</h2>
+        {% for user in users %}
+            <article class="user-row">
+                <div>
+                    <strong>{{ user.username }}</strong>
+                    <small>{% if user.is_admin %}مدیر{% else %}کاربر{% endif %} · ایجاد {{ user.created_at.strftime("%Y-%m-%d") }}</small>
+                </div>
+                {% if not user.is_admin and user.id != current_user.id %}
+                    <form method="post" action="{{ url_for('auth.delete_user', user_id=user.id) }}" onsubmit="return confirm('این حساب و اتصال‌های متعلق به آن حذف شوند؟')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="button danger-button" type="submit">حذف کاربر</button>
+                    </form>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </section>
+</main>
+{% endblock %}
