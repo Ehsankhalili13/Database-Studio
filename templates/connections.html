@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}اتصال‌ها | Database Studio{% endblock %}
+{% block content %}
+<main class="workspace">
+    <header class="workspace-header">
+        <div>
+            <a href="{{ url_for('studio.dashboard') }}">← بازگشت به داشبورد</a>
+            <h1>مدیریت اتصال‌ها</h1>
+            <p>اتصال‌های ذخیره‌شده فقط برای حساب فعلی نمایش داده می‌شوند.</p>
+        </div>
+        <a class="button primary-button" href="{{ url_for('connections.create') }}">＋ اتصال جدید</a>
+    </header>
+
+    {% if connections %}
+        <section class="connection-list">
+            {% for connection in connections %}
+                <article class="connection-card">
+                    <div class="connection-icon">{{ {"sqlite": "▤", "mysql": "◉", "sqlserver": "▦"}.get(connection.driver, "●") }}</div>
+                    <div class="connection-info">
+                        <h2>{{ connection.name }}</h2>
+                        <p>{{ drivers[connection.driver] }} ·
+                            {% if connection.driver == "sqlite" %}
+                                {{ connection.database_path }}
+                            {% else %}
+                                {{ connection.host }}:{{ connection.port }} / {{ connection.database_name }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="connection-actions">
+                        <a class="button" href="{{ url_for('connections.explorer', connection_id=connection.id) }}">مرور ساختار</a>
+                        <a class="button" href="{{ url_for('connections.query', connection_id=connection.id) }}">ویرایشگر SQL</a>
+                        <a class="button" href="{{ url_for('connections.edit', connection_id=connection.id) }}">ویرایش</a>
+                        <form method="post" action="{{ url_for('connections.test', connection_id=connection.id) }}">
+                            <button class="button" type="submit">تست اتصال</button>
+                        </form>
+                        <form method="post" action="{{ url_for('connections.delete', connection_id=connection.id) }}" onsubmit="return confirm('این اتصال حذف شود؟')">
+                            <button class="button danger-button" type="submit">حذف</button>
+                        </form>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <section class="empty-state">
+            <h2>هنوز اتصالی نساخته‌ای</h2>
+            <p>یک اتصال SQLite، MySQL یا SQL Server بساز تا بتوانی ساختار دیتابیس را ببینی و کوئری اجرا کنی.</p>
+            <a class="button primary-button" href="{{ url_for('connections.create') }}">ساخت اولین اتصال</a>
+        </section>
+    {% endif %}
+</main>
+{% endblock %}
