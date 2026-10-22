@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
         index=True,
     )
     password_hash = db.Column(db.String(256), nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(
         db.DateTime,
         default=lambda: datetime.now(timezone.utc),
