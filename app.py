@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask, redirect, url_for
 
 from auth import auth_bp, login_manager
+from connections import connections_bp
 from extensions import db
 from studio import studio_bp
 
@@ -48,6 +49,7 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(studio_bp)
+    app.register_blueprint(connections_bp)
 
     @app.get("/")
     def index():
