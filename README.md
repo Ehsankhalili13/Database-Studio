@@ -1,21 +1,26 @@
 # Database Studio
 
-A local-only database management workspace inspired by SSMS and phpMyAdmin.
+A local-only database management workspace inspired by SSMS and phpMyAdmin. The application binds to `127.0.0.1` and is intended for use on the same computer.
 
-## Current implementation
+## Implemented
 
-- Flask application factory.
-- First-account setup, login, and logout.
-- Password hashing using Werkzeug.
-- Persian right-to-left dashboard.
-- Internal application data stored in SQLite.
-- Development server bound to `127.0.0.1`.
+- First-account setup, login, logout, password hashing, and CSRF protection for POST forms.
+- Saved connection profiles for SQLite, MySQL, and Microsoft SQL Server.
+- Connection test before saving, connection edit/delete, and per-user connection visibility.
+- Encryption of saved connection passwords using a key derived from the Flask secret key.
+- Database listing and table/column explorer.
+- SQL editor that executes a single statement and displays up to 500 result rows.
+- Paginated table data browser (100 rows per page).
+- CSV export and CSV import into an existing table (up to 2 MB and 10,000 rows per upload).
+- Local secret key persistence when `SECRET_KEY` is not configured, so saved connection credentials remain decryptable after restarts.
+- Persian right-to-left interface.
 
 ## Requirements
 
 - Python 3.11 or newer.
-- Python dependencies listed in `requirements.txt`.
-- ODBC driver for SQL Server when its connector is implemented.
+- Python dependencies in `requirements.txt`.
+- For MySQL, a reachable MySQL server and valid credentials.
+- For SQL Server, Microsoft ODBC Driver (for example, ODBC Driver 18 for SQL Server) installed on Windows, in addition to the Python `pyodbc` package.
 
 ## Run on Windows
 
@@ -36,10 +41,11 @@ Open PowerShell in the project directory.
 3. Install dependencies:
 
    ```powershell
-   pip install -r requirements.txt
+   python -m pip install --upgrade pip
+   python -m pip install -r requirements.txt
    ```
 
-4. Copy `.env.example` to `.env` and set a long, random `SECRET_KEY`.
+4. Optional but recommended: copy `.env.example` to `.env` and set a long random `SECRET_KEY`. If you omit it, the application creates a local key file under `instance/secret.key`. Protect the `instance/` directory.
 5. Start the application:
 
    ```powershell
@@ -47,21 +53,23 @@ Open PowerShell in the project directory.
    ```
 
 6. Open [http://127.0.0.1:5000/auth/signup](http://127.0.0.1:5000/auth/signup) and create the first account.
+7. Open **اتصال‌ها** in the dashboard, create a connection, and use **تست اتصال** to diagnose configuration problems.
 
-## Not implemented yet
+## Driver notes
 
-The current dashboard is a UI scaffold. These features are still pending:
+- **SQLite:** select a path such as `sample.sqlite3`. A relative path is resolved under the application's instance directory.
+- **MySQL:** enter the server host, port (usually 3306), database name, username, and password. The application uses PyMySQL.
+- **SQL Server:** enter the host, port (usually 1433), database name, username, and password. The ODBC driver name must match a driver installed on the machine. Windows integrated authentication is not currently exposed in the form.
 
-- Saving, testing, and managing database connections.
-- SQLite, MySQL, and SQL Server adapters.
-- Database and schema explorer.
-- Table data browser with pagination, search, and sorting.
-- SQL editor and query execution.
-- Import/export tools.
-- Provisioning additional users and managing roles.
+## Important limitations and security notes
 
-## Security notes
+This is an early-stage local development tool, not yet a fully audited replacement for SSMS or phpMyAdmin.
 
-This is an early development scaffold, not yet a replacement for SSMS or phpMyAdmin. Public signup is only available until the first account is created. A proper local user-administration flow, CSRF protection, secure handling of database credentials, and safeguards for SQL execution still need to be implemented.
+- SQL entered in the editor runs with the privileges of the configured database account. Use a least-privilege database account and do not connect to production databases until the code has been reviewed and tested.
+- The editor accepts one statement per execution. It is not a complete SQL parser; semicolons inside string literals may be rejected.
+- The table browser is read-only; change data using SQL statements in the editor.
+- CSV import inserts rows into an existing table; it does not create tables or infer schema.
+- Additional account administration, roles, query history, and comprehensive automated integration tests are not yet implemented.
+- Existing application tables are created automatically, but schema changes are not managed by a migration system yet. Back up `instance/studio.sqlite3` before future model changes.
+- Keep the app bound to `127.0.0.1`. Do not expose it to a network. Protect `.env`, `instance/secret.key`, and `instance/studio.sqlite3`.
 
-Keep the app bound to `127.0.0.1`. Do not expose it to a network or use it with important databases until the missing security controls have been implemented and tested. Protect the `.env` file and the `instance/` directory.
