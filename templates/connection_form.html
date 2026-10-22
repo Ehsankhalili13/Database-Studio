@@ -11,6 +11,7 @@
     </header>
 
     <form class="settings-form" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label>نام دلخواه اتصال
             <input name="name" maxlength="100" required value="{{ form_values.get('name', connection.name if connection else '') }}">
         </label>
