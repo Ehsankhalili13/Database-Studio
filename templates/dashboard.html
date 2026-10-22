@@ -19,8 +19,8 @@
         </a>
 
         <p class="caption">مدیریت داده</p>
-        <a href="#connections"><span aria-hidden="true">⌁</span> اتصال‌ها <i>۰</i></a>
-        <a href="#query"><span aria-hidden="true">⌘</span> ویرایشگر SQL</a>
+        <a href="{{ url_for('connections.index') }}"><span aria-hidden="true">⌁</span> اتصال‌ها</a>
+        <a href="{{ url_for('connections.index') }}"><span aria-hidden="true">⌘</span> ویرایشگر SQL</a>
         <a href="#activity"><span aria-hidden="true">◷</span> فعالیت اخیر</a>
 
         <div class="spacer"></div>
@@ -37,6 +37,7 @@
                 <small>کاربر واردشده</small>
             </span>
             <form method="post" action="{{ url_for('auth.logout') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" title="خروج" aria-label="خروج">↪</button>
             </form>
         </div>
@@ -65,24 +66,24 @@
             <article>
                 <small>اتصال‌های ذخیره‌شده</small>
                 <h2>۰ <i>اتصال</i></h2>
-                <p>مدیریت اتصال هنوز پیاده‌سازی نشده است.</p>
+                <p><a href="{{ url_for('connections.index') }}">مدیریت اتصال‌ها ←</a></p>
             </article>
             <article>
                 <small>پایگاه‌های داده</small>
                 <h2>—</h2>
-                <p>پس از پیاده‌سازی اتصال‌ها نمایش داده می‌شود.</p>
+                <p>پس از افزودن اتصال، دیتابیس‌ها نمایش داده می‌شوند.</p>
             </article>
             <article>
                 <small>کوئری‌های اجراشده</small>
                 <h2>—</h2>
-                <p>ویرایشگر SQL هنوز پیاده‌سازی نشده است.</p>
+                <p>کوئری‌ها را از صفحه هر اتصال اجرا کن.</p>
             </article>
         </section>
 
         <section class="section-heading" id="connections">
             <small>GET STARTED</small>
             <h2>اتصال به پایگاه داده</h2>
-            <p>پشتیبانی از این موتورهای دیتابیس در برنامه‌ریزی پروژه است.</p>
+            <p>یک اتصال بساز، سپس ساختار دیتابیس را مرور کن یا SQL اجرا کن.</p>
         </section>
 
         <section class="connect">
@@ -90,7 +91,7 @@
                 <b class="ico blue" aria-hidden="true">▤</b>
                 <h3>SQLite</h3>
                 <p>پایگاه داده فایل‌محور؛ بدون نیاز به سرور جداگانه.</p>
-                <small>در انتظار پیاده‌سازی</small>
+                <small>قابل انتخاب در فرم اتصال</small>
             </article>
             <article>
                 <b class="ico gold" aria-hidden="true">◉</b>
@@ -109,20 +110,20 @@
         <section class="lower">
             <article class="panel" id="query">
                 <h3>ویرایشگر SQL</h3>
-                <p>این قسمت در حال حاضر فقط پیش‌نمایش رابط کاربری است.</p>
+                <p>برای اجرای SQL ابتدا یک اتصال انتخاب کن.</p>
 
                 <div class="code">
                     <small>query.sql</small>
                     <pre><i>SELECT</i> *
 <i>FROM</i> your_table
 <i>LIMIT</i> 100;</pre>
-                    <footer>SQL <span>پیش‌نمایش، بدون اجرا</span></footer>
+                    <footer>SQL <span>نمونه دستور</span></footer>
                 </div>
             </article>
 
             <article class="panel" id="activity">
                 <h3>فعالیت اخیر</h3>
-                <p>تاریخچه فعالیت‌ها هنوز پیاده‌سازی نشده است.</p>
+                <p>ثبت تاریخچه اجرای کوئری‌ها هنوز اضافه نشده است.</p>
 
                 <div class="empty">
                     <b aria-hidden="true">◷</b>
