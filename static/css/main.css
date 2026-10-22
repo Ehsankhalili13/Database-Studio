@@ -918,3 +918,18 @@ a {
         width: 100%;
     }
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 11px;
+}
+.settings-form input[type="file"] {
+    direction: ltr;
+    text-align: left;
+    background: white;
+}
