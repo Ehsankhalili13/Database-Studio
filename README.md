@@ -55,6 +55,17 @@ Open PowerShell in the project directory.
 6. Open [http://127.0.0.1:5000/auth/signup](http://127.0.0.1:5000/auth/signup) and create the first account.
 7. Open **اتصال‌ها** in the dashboard, create a connection, and use **تست اتصال** to diagnose configuration problems.
 
+## Run smoke tests
+
+The repository includes SQLite connection/query smoke tests. Install pytest and run:
+
+\`\`\`powershell
+python -m pip install pytest
+python -m pytest -q
+\`\`\`
+
+GitHub Actions is configured to run these tests on pushes and pull requests. This does not replace testing against real MySQL and SQL Server instances.
+
 ## Driver notes
 
 - **SQLite:** select a path such as `sample.sqlite3`. A relative path is resolved under the application's instance directory.
