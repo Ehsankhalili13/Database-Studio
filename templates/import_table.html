@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}ورود CSV | {{ table_name }}{% endblock %}
+{% block content %}
+<main class="workspace narrow-workspace">
+    <header class="workspace-header">
+        <div>
+            <a href="{{ url_for('connections.table_data', connection_id=connection.id, table_name=table_name) }}">← بازگشت به جدول</a>
+            <h1>وارد کردن CSV</h1>
+            <p>جدول مقصد: {{ table_name }}</p>
+        </div>
+    </header>
+    <section class="settings-form">
+        <p>فایل باید UTF-8 یا UTF-8 with BOM باشد و ردیف اول آن نام ستون‌ها را داشته باشد. فقط ستون‌های موجود در جدول پذیرفته می‌شوند؛ حداکثر ۲ مگابایت و ۱۰٬۰۰۰ ردیف در هر بار.</p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label>فایل CSV
+                <input type="file" name="csv_file" accept=".csv,text/csv" required>
+            </label>
+            <div class="form-actions">
+                <button class="button primary-button" type="submit">وارد کردن ردیف‌ها</button>
+                <a class="button" href="{{ url_for('connections.table_data', connection_id=connection.id, table_name=table_name) }}">انصراف</a>
+            </div>
+        </form>
+    </section>
+</main>
+{% endblock %}
