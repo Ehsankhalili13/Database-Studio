@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}ویرایشگر SQL | {{ connection.name }}{% endblock %}
+{% block content %}
+<main class="workspace">
+    <header class="workspace-header">
+        <div>
+            <a href="{{ url_for('connections.index') }}">← بازگشت به اتصال‌ها</a>
+            <h1>ویرایشگر SQL</h1>
+            <p>اتصال فعال: {{ connection.name }} · {{ connection.driver }}</p>
+        </div>
+        <a class="button" href="{{ url_for('connections.explorer', connection_id=connection.id) }}">مرور ساختار</a>
+    </header>
+
+    <form class="query-form" method="post">
+        <label for="sql">دستور SQL</label>
+        <textarea id="sql" name="sql" spellcheck="false" autocapitalize="off" required>{{ sql }}</textarea>
+        <div class="query-actions">
+            <span>در هر اجرا فقط یک دستور SQL پذیرفته می‌شود. حداکثر ۵۰۰ ردیف نتیجه نمایش داده می‌شود.</span>
+            <button class="button primary-button" type="submit">▶ اجرای کوئری</button>
+        </div>
+    </form>
+
+    {% if result %}
+        <section class="result-panel">
+            <header class="result-header">
+                <h2>نتیجه اجرا</h2>
+                <span>{{ result.row_count }} ردیف</span>
+            </header>
+            {% if result.columns %}
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead><tr>{% for column in result.columns %}<th>{{ column }}</th>{% endfor %}</tr></thead>
+                        <tbody>
+                            {% for row in result.rows %}
+                                <tr>{% for value in row %}<td>{{ value if value is not none else "NULL" }}</td>{% endfor %}</tr>
+                            {% else %}
+                                <tr><td colspan="{{ result.columns|length }}">نتیجه‌ای برنگشت.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if result.truncated %}<p class="form-hint">نمایش نتایج در ۵۰۰ ردیف متوقف شده است.</p>{% endif %}
+            {% else %}
+                <p>{{ result.message }}</p>
+            {% endif %}
+        </section>
+    {% endif %}
+</main>
+{% endblock %}
